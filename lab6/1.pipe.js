@@ -1,12 +1,13 @@
 'use strict';
 
 const pipe = (...fns) => {
-  for (const fn of fns) {
-    if (typeof fn !== 'function') {
-      throw new Error('All pipe arguments should be functions');
-    }
+  const checkedFns = fns.every(fn => typeof fn === 'function');
+
+  if (!checkedFns) {
+    throw new Error('Pipe args should be functions');
   }
-  return (x) => fns.reduce((value, fn) => fn(value), x);
+
+  return (x) => fns.reduce((acc, fn) => fn(acc), x);
 };
 
 module.exports = { pipe };
